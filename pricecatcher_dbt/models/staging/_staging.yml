@@ -1,0 +1,41 @@
+version: 2
+
+models:
+  - name: stg_lookup_item
+    columns:
+      - name: item_code
+        data_tests:
+          - unique
+          - not_null
+
+  - name: stg_lookup_premise
+    columns:
+      - name: premise_code
+        data_tests:
+          - unique
+          - not_null
+
+  - name: stg_pricecatcher
+    columns:
+      - name: price_date
+        data_tests:
+          - not_null
+      - name: premise_code
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_lookup_premise')
+                field: premise_code
+      - name: item_code
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_lookup_item')
+                field: item_code
+              config:
+                severity: warn
+      - name: price
+        data_tests:
+          - not_null
